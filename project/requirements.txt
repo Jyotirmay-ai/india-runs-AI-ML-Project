@@ -1,0 +1,11 @@
+pandas
+numpy
+sentence-transformers
+faiss-cpu
+langchain
+langchain-community
+ollama
+groq
+python-dotenv
+tqdm
+openpyxl
