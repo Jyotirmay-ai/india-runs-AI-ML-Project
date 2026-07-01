@@ -19,6 +19,9 @@ if os.getenv("DATASET_PATH"):
 CACHE_DIR = PROJECT_ROOT / "cache"
 CACHE_DIR.mkdir(exist_ok=True)
 
+# Progress checkpoint file (persists across runs for resume capability)
+PROGRESS_FILE = CACHE_DIR / "ranking_progress.jsonl"
+
 # ── Output (outside project - intentional) ──────────────────────────
 RESULT_BASE_DIR = Path(os.getenv("RESULT_BASE_DIR", PROJECT_ROOT.parent / "Result"))
 RESULT_BASE_DIR.mkdir(exist_ok=True)
@@ -54,5 +57,5 @@ def validate_setup():
 # Export commonly used paths
 __all__ = [
     "PROJECT_ROOT", "CANDIDATES_PATH", "JD_PATH", 
-    "CACHE_DIR", "RESULT_BASE_DIR", "validate_setup"
+    "CACHE_DIR", "RESULT_BASE_DIR", "validate_setup", "PROGRESS_FILE"
 ]

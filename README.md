@@ -112,9 +112,9 @@ Result/2026-06-23_14-30-45/
 ├── 1_filtered_candidates.jsonl      # Stage 0: After behavioral pre-filter (71k candidates)
 ├── 2_shortlisted_candidates.jsonl   # Stage 1: Top 100 from semantic search
 ├── 3_ranked_candidates.jsonl        # Stage 2: Full LLM evaluation details (100 candidates)
-├── 5_ranking_progress.jsonl         # Stage 2: Checkpoint for resume capability
-├── 6_ranked_candidates.csv          # Top N candidates (CSV spreadsheet)
-└── 6_ranked_candidates.xlsx         # Top N candidates (Excel spreadsheet)
+├── 4_ranking_progress.jsonl         # Stage 2: Checkpoint for resume capability
+├── 5_ranked_candidates.csv          # Top N candidates (CSV spreadsheet)
+└── 5_ranked_candidates.xlsx         # Top N candidates (Excel spreadsheet)
 ```
 
 ## Outputs (per run folder)
@@ -123,9 +123,9 @@ Result/2026-06-23_14-30-45/
 | `1_filtered_candidates.jsonl`           | After behavioral pre-filter (~71k candidates)          |
 | `2_shortlisted_candidates.jsonl`        | Top 100 from semantic search                           |
 | `3_ranked_candidates.jsonl`             | Full LLM evaluation details (100 candidates)           |
-| `5_ranking_progress.jsonl`              | Incremental checkpoint for resume capability           |
-| `6_ranked_candidates.csv`               | Top N ranked candidates (spreadsheet, configurable)    |
-| `6_ranked_candidates.xlsx`              | Top N ranked candidates (Excel, configurable)          |
+| `4_ranking_progress.jsonl`              | Incremental checkpoint for resume capability           |
+| `5_ranked_candidates.csv`               | Top N ranked candidates (spreadsheet, configurable)    |
+| `5_ranked_candidates.xlsx`              | Top N ranked candidates (Excel, configurable)          |
 
 ## Evaluation Criteria (from JD)
 1. **Production Embeddings/Retrieval** - Built & deployed to real users

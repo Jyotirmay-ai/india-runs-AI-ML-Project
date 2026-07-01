@@ -66,20 +66,30 @@ Now that we have the top 100, we can afford to use a very "smart" but "slow" AI 
 
 ## 3. The "Save Game" File: Resume Capability
 
-The file `5_ranking_progress.jsonl` acts like a **"save game"** for the LLM scoring stage.
+The file `4_ranking_progress.jsonl` acts like a **"save game"** for the LLM scoring stage.
+
+**Where it lives:** The progress checkpoint is stored at `project/cache/ranking_progress.jsonl` — a **shared location** that persists across runs. Each run folder also gets a copy (`4_ranking_progress.jsonl`) for record-keeping.
 
 **Why it exists:** Stage 2 calls the Groq API to score 100 candidates one-by-one. This takes several minutes. If something crashes halfway (network error, API rate limit, power outage), you don't want to re-score the candidates already done.
 
 **How it works:**
-- After each candidate is scored, one line is appended to this file
+- After each candidate is scored, one line is appended to the shared progress file
 - Next run: the system reads this file, sees which candidates are already done, and **skips them**
-- It resumes from where it left off automatically
+- It resumes from where it left off automatically — even if you run `main.py` fresh (which creates a new timestamped folder)
 
 **Example:**
 > Run 1: Scores 47 candidates → crash!  
-> Run 2: Reads progress file, sees 47 done → only scores remaining 53
+> Run 2: Reads shared progress file, sees 47 done → only scores remaining 53
 
 **Why you need it:** It's insurance. If the Groq API has a hiccup (common on free tier), you just re-run `python main.py` and it picks up automatically. No manual intervention needed.
+
+**Important — When to clear the progress:**
+If you change the dataset or job description, the shortlisted candidates may differ. The old progress would be invalid. Clear it by running:
+```python
+from src.llm_ranker import clear_progress_checkpoint
+clear_progress_checkpoint()
+```
+Or simply delete `project/cache/ranking_progress.jsonl` before the next run.
 
 ## 4. Logging & Debugging
 

@@ -107,9 +107,9 @@ def main():
         logger.info(f"  - 1_filtered_candidates.jsonl ({len(filtered)} candidates)")
         logger.info(f"  - 2_shortlisted_candidates.jsonl ({len(shortlisted)} candidates)")
         logger.info(f"  - 3_ranked_candidates.jsonl ({len(ranked)} candidates)")
-        logger.info(f"  - 5_ranking_progress.jsonl (checkpoint)")
-        logger.info(f"  - 6_ranked_candidates.csv  (top {len(merged_top)} candidates, spreadsheet)")
-        logger.info(f"  - 6_ranked_candidates.xlsx (top {len(merged_top)} candidates, spreadsheet)")
+        logger.info(f"  - 4_ranking_progress.jsonl (checkpoint)")
+        logger.info(f"  - 5_ranked_candidates.csv  (top {len(merged_top)} candidates, spreadsheet)")
+        logger.info(f"  - 5_ranked_candidates.xlsx (top {len(merged_top)} candidates, spreadsheet)")
         
         logger.info("\n" + "-" * 30)
         logger.info("EXECUTION TIME REPORT")

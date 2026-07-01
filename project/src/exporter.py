@@ -1,3 +1,4 @@
+import os
 import json
 import pandas as pd
 from logger import logger
@@ -100,8 +101,8 @@ def export_ranked_candidates(merged_list, output_dir, formats=("csv", "xlsx")):
     extra_cols = [c for c in df.columns if c not in key_cols]
     df = df[key_cols + extra_cols]
 
-    csv_path = output_dir / "6_ranked_candidates.csv"
-    xlsx_path = output_dir / "6_ranked_candidates.xlsx"
+    csv_path = os.path.join(output_dir, "5_ranked_candidates.csv")
+    xlsx_path = os.path.join(output_dir, "5_ranked_candidates.xlsx")
 
     if "csv" in formats:
         df.to_csv(csv_path, index=False, encoding="utf-8-sig")

@@ -1,15 +1,25 @@
 import json
 import os
+import shutil
 from groq import Groq
 from tqdm import tqdm
 from dotenv import load_dotenv
-from config import JD_PATH
+from config import JD_PATH, PROGRESS_FILE
 from logger import logger
 
 load_dotenv()
 
 # Initialize Groq client (requires GROQ_API_KEY environment variable)
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+
+def clear_progress_checkpoint():
+    """Clear the persistent progress checkpoint (use when changing dataset/JD)."""
+    if os.path.exists(PROGRESS_FILE):
+        os.remove(PROGRESS_FILE)
+        logger.info(f"Cleared progress checkpoint: {PROGRESS_FILE}")
+    else:
+        logger.info("No progress checkpoint to clear")
+
 
 def load_shortlisted_candidates(file_path):
     candidates = []
@@ -114,7 +124,7 @@ def run_llm_ranker_stage(jd_text, shortlisted_candidates, output_dir):
         return []
     
     ranked_path = os.path.join(output_dir, "3_ranked_candidates.jsonl")
-    progress_path = os.path.join(output_dir, "5_ranking_progress.jsonl")
+    progress_path = str(PROGRESS_FILE)  # Shared progress file across runs
     
     if os.path.exists(ranked_path):
         logger.info(f"Found existing {ranked_path}, loading...")
@@ -129,7 +139,7 @@ def run_llm_ranker_stage(jd_text, shortlisted_candidates, output_dir):
                 r = json.loads(line)
                 results.append(r)
                 completed_ids.add(r["candidate_id"])
-        logger.info(f"Resuming from {len(completed_ids)} completed...")
+        logger.info(f"Resuming from {len(completed_ids)} completed (from shared progress file)...")
     
     remaining = [c for c in shortlisted_candidates if c["candidate_id"] not in completed_ids]
     logger.info(f"Evaluating {len(remaining)} candidates via Groq...")
@@ -147,13 +157,19 @@ def run_llm_ranker_stage(jd_text, shortlisted_candidates, output_dir):
         for r in results:
             f.write(json.dumps(r) + '\n')
     
+    # Copy progress file to run folder for record-keeping
+    import shutil
+    run_progress_path = os.path.join(output_dir, "4_ranking_progress.jsonl")
+    shutil.copy2(PROGRESS_FILE, run_progress_path)
+    
     logger.info(f"Ranking complete. Top 5:")
     for i, r in enumerate(results[:5]):
         logger.info(f"  {i+1}. {r['name']} ({r['candidate_id']}) - Score: {r['score']}")
     
     logger.info(f"Deliverables saved to {output_dir}:")
     logger.info(f"  - 3_ranked_candidates.jsonl ({len(results)} candidates)")
-    logger.info(f"  - 5_ranking_progress.jsonl (checkpoint)")
+    logger.info(f"  - 4_ranking_progress.jsonl (checkpoint copy)")
+    logger.info(f"Progress checkpoint: {PROGRESS_FILE} (persists across runs)")
     return results
 
 if __name__ == "__main__":
