@@ -2,6 +2,10 @@
 
 **The Data & AI Challenge** - Intelligent Candidate Discovery & Ranking
 
+
+[![Watch the IBVAP demo](https://i.ytimg.com/vi/7NZ5hl_n6IU/hqdefault.jpg)](https://www.youtube.com/watch?v=7NZ5hl_n6IU&t=41s)
+
+
 ## Overview
 A two-stage Retrieval-Augmented Ranking (RAR) system that goes beyond keyword matching to evaluate genuine candidate fit for a Senior AI Engineer role at Redrob AI.
 
